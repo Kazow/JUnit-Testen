@@ -12,7 +12,7 @@ public class Student extends Person implements Comparable<Student> {
 		this(firstName, lastName, false);
 	}
 	
-	public Student(String firstName, String lastName, GregorianCalendar birthdate) {
+	public Student(String firstName, String lastName, Date birthdate) {
 		this(firstName, lastName);
 		setBirthDate(birthdate);
 	}
@@ -23,28 +23,26 @@ public class Student extends Person implements Comparable<Student> {
 		setSelfEntitled(selfEntitled);
 	}
 
-	public GregorianCalendar getBirthDate() {
+	public Date getBirthDate() {
 		return birthDate;
 	}
 	
 	public String getStringBirthDate()  {
-		String s = "" + getBirthDate().get(Calendar.YEAR);
-		s += "" + getBirthDate().get(Calendar.MONTH);
-		s+= "" + getBirthDate().get(Calendar.DAY_OF_MONTH);
+		String s = "" + getBirthDate().getYear();
+		s += "" + getBirthDate().getMonth();
+		s+= "" + getBirthDate().getDate();
 		return s;
 	}
 
-	public void setBirthDate(GregorianCalendar birthDate) {
+	public void setBirthDate(Date birthDate) {
 		if(birthDate == null){
 			throw new IllegalArgumentException("BirthDate is null!");
 		}
-		GregorianCalendar calandar = new GregorianCalendar();
-		if(birthDate.getTimeInMillis()<=calandar.getTimeInMillis())
 		this.birthDate = birthDate;
 	}
 
 	private boolean selfEntitled;
-	private GregorianCalendar birthDate; // TODO add getter,setter,Constructors
+	private Date birthDate; // TODO add getter,setter,Constructors
 
 	public void setSelfEntitled(boolean selfEntitled) {
 		this.selfEntitled = selfEntitled;
@@ -70,7 +68,7 @@ public class Student extends Person implements Comparable<Student> {
 		
 		String s = String.format("%s {firstName=%s, lastName=%s, birthDate=%s}", getClass()
 				.getSimpleName(), getFirstName(), getLastName(), getStringBirthDate());
-		System.out.println(s);
+//		System.out.println(s);
 		return s;
 		}
 	
@@ -78,23 +76,31 @@ public class Student extends Person implements Comparable<Student> {
 		Collections.sort(al, new Comparator<Student>(){
 			@Override
 			public int compare(Student s1, Student s2) {
-				if(s1.getBirthDate().YEAR == s2.getBirthDate().YEAR){
-					if(s1.getBirthDate().MONTH == s2.getBirthDate().MONTH) {
-						if(s1.getBirthDate().DAY_OF_MONTH == s2.getBirthDate().DAY_OF_MONTH) {
+				if(s1.getBirthDate().getYear() == s2.getBirthDate().getYear()){
+					System.out.println("getYear() =="+s1.getBirthDate().getYear()+"=="+s2.getBirthDate().getYear());
+					if(s1.getBirthDate().getMonth() == s2.getBirthDate().getMonth()) {
+						System.out.println("getMonth() ==");
+						if(s1.getBirthDate().getDate() == s2.getBirthDate().getDate()) {
+							System.out.println("getDate() ==");
 							return 0;
-						} else if(s1.getBirthDate().DAY_OF_MONTH > s2.getBirthDate().DAY_OF_MONTH){
+						} else if(s1.getBirthDate().getDate() > s2.getBirthDate().getDate()){
+							System.out.println("getDate() >");
 							return 1;
 						}
-					} else if(s1.getBirthDate().MONTH > s2.getBirthDate().MONTH){
+					} else if(s1.getBirthDate().getMonth() > s2.getBirthDate().getMonth()){
+						System.out.println("getMonth() >");
 						return 1;
 					}
-				} else if(s1.getBirthDate().YEAR > s2.getBirthDate().YEAR){
+				} else if(s1.getBirthDate().getYear() > s2.getBirthDate().getYear()){
+					System.out.println("getYear() >");
 					return 1;
 				}
 				return -1;
 			}
-			
 		});
+		for(Student s : al) {
+			System.out.println(s);
+		}
 		return al;
 	}
 }

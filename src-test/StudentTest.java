@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import daten.Student;
 public class StudentTest {
 
 	private ArrayList<Student> al1, al2;
-	GregorianCalendar cal = new GregorianCalendar(1993,12,28);
+	Date cal = new Date(1993,12,28);
 	private Student s = new Student("Alex", "Mueller", cal);
 	
 	
@@ -24,11 +24,11 @@ public class StudentTest {
 		al1 = new ArrayList<Student>();
 		al2 = new ArrayList<Student>();
 		
-		Student s1 = new Student("Alex", "Müller", new GregorianCalendar(1993,12,28));
-		Student s2 = new Student("Peter", "Müller", new GregorianCalendar(1992,12,28));
-		Student s3 = new Student("Franz", "Müller", new GregorianCalendar(1995,12,28));
-		Student s4 = new Student("Heinz", "Müller", new GregorianCalendar(1991,12,28));
-		Student s5 = new Student("Karl", "Müller", new GregorianCalendar(1999,12,28));
+		Student s1 = new Student("Alex", "Müller", new Date(1993,10,2));
+		Student s2 = new Student("Peter", "Müller", new Date(1992,11,3));
+		Student s3 = new Student("Franz", "Müller", new Date(1995,5,4));
+		Student s4 = new Student("Heinz", "Müller", new Date(1991,1,5));
+		Student s5 = new Student("Karl", "Müller", new Date(1999,2,6));
 		
 		al1.add(s1);
 		al1.add(s2);
@@ -84,11 +84,25 @@ public class StudentTest {
 	public void constructorWithWhiteSpaceArgumentForLastName() {
 		Student s = new Student("Peter", " ");
 	}
+	
+	@Test
+	public void testCompareTo() {
+		Student s1 = new Student("Alex", "Müller", new Date(1992,11,28));
+		Student s2 = new Student("Alex", "Müller", new Date(1993,11,28));
+		assertEquals(-1, s1.compareTo(s2));
+		
+		s1 = new Student("Alex", "Müller", new Date(1993,11,28));
+		s2 = new Student("Alex", "Müller", new Date(1993,11,28));
+		assertEquals(0, s1.compareTo(s2));
+		
+		s1 = new Student("Alex", "Müller", new Date(1994,11,28));
+		s2 = new Student("Alex", "Müller", new Date(1993,11,28));
+		assertEquals(1, s1.compareTo(s2));
+	}
 
 	@Test
 	public void testToString() {
-		Student s1 = new Student("Alex", "Müller", new GregorianCalendar(1993,11,28));
-		Student student = new Student("Alex", "Müller", new GregorianCalendar(1993,12,28));
+		Student s1 = new Student("Alex", "Müller", new Date(1993,11,28));
 		assertEquals("Student {firstName=Alex, lastName=Müller, birthDate=19931128}",
 				s1.toString());
 	}
@@ -96,6 +110,6 @@ public class StudentTest {
 	
 	@Test
 	public void testSortBirthdate() {
-	assertEquals(al2, s.sortBirthdate(al1));
+		assertEquals(al2, s.sortBirthdate(al1));
 	}
 }
